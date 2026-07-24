@@ -840,6 +840,122 @@ footer { padding: 48px 56px 56px; position: relative; overflow: hidden; }
 .wa-float:hover { transform: scale(1.1); box-shadow: 0 10px 36px rgba(37,211,102,.5); }
 @keyframes wa-bounce { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
 
+/* ─── BARRA DE PROGRESO ─── */
+#scroll-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0;
+    background: linear-gradient(90deg, #8F1184, #d16ac4);
+    z-index: 300; transition: width .1s linear;
+}
+
+/* ─── CTA STICKY ─── */
+#sticky-cta {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 150;
+    background: rgba(18,2,26,.92); backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: center; gap: 18px;
+    transform: translateY(110%); transition: transform .4s ease;
+}
+#sticky-cta.show { transform: translateY(0); }
+#sticky-cta .txt { font-size: 14px; color: var(--muted-2); }
+#sticky-cta .txt strong { color: var(--white); font-weight: 600; }
+#sticky-cta .cta-btn {
+    padding: 10px 22px; background: var(--accent); color: #fff;
+    font-size: 13px; font-weight: 600; border-radius: 100px;
+    text-decoration: none; white-space: nowrap;
+    transition: background .2s, transform .15s;
+}
+#sticky-cta .cta-btn:hover { background: var(--accent-2); transform: scale(1.03); }
+#sticky-cta .close-btn {
+    background: none; border: none; color: var(--muted);
+    font-size: 18px; padding: 4px 8px; line-height: 1;
+    font-family: var(--font-sans);
+}
+#sticky-cta .close-btn:hover { color: var(--white); }
+body.has-sticky .wa-float { bottom: 84px; }
+body.has-sticky #back-top { bottom: 84px; }
+
+/* ─── VOLVER ARRIBA ─── */
+#back-top {
+    position: fixed; bottom: 24px; left: 24px; z-index: 150;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--surface-2); border: 1px solid var(--border-2);
+    color: var(--muted-2); font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: all .3s;
+    text-decoration: none;
+}
+#back-top.show { opacity: 1; pointer-events: auto; }
+#back-top:hover { color: #fff; border-color: var(--accent-2); }
+
+/* ─── COMPARACIÓN ─── */
+#comparacion { border-bottom: 1px solid var(--border); }
+.comp-wrap { overflow-x: auto; }
+table.comp { width: 100%; border-collapse: collapse; min-width: 720px; }
+table.comp th, table.comp td {
+    padding: 20px 24px; text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px; vertical-align: top;
+}
+table.comp thead th {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted); font-weight: 600; font-family: var(--font-mono);
+    border-bottom: 1px solid var(--border-2);
+}
+table.comp td:first-child {
+    color: var(--white); font-weight: 600; width: 26%;
+}
+table.comp td { color: var(--muted-2); line-height: 1.55; }
+table.comp .col-scale { background: rgba(143,17,132,.07); }
+table.comp thead .col-scale {
+    color: var(--accent-2); border-bottom: 1px solid var(--accent);
+}
+table.comp td.col-scale { color: var(--text); }
+table.comp .no { color: var(--muted); }
+table.comp .si { color: var(--accent-2); font-weight: 500; }
+.comp-pad { padding: 0 56px 56px; }
+@media (max-width: 768px) { .comp-pad { padding: 0 20px 40px; } }
+
+/* ─── QUICK REPLIES (respuestas predefinidas) ─── */
+.quick-title {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted); font-weight: 500; font-family: var(--font-mono);
+    margin-bottom: 10px;
+}
+.quick-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.quick-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 16px;
+    background: var(--surface); border: 1px solid var(--border-2);
+    border-radius: 100px;
+    font-size: 12.5px; font-weight: 500; color: var(--text);
+    text-decoration: none;
+    transition: all .2s;
+}
+.quick-chip:hover { border-color: var(--accent-2); background: var(--accent-soft); color: #fff; }
+.quick-chip .arrow { color: var(--accent-2); font-size: 11px; }
+
+/* ─── IG LINK ─── */
+.ig-strip {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 18px 20px; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--muted-2); flex-wrap: wrap; text-align: center;
+}
+.ig-strip a { color: var(--accent-2); text-decoration: none; font-weight: 600; }
+.ig-strip a:hover { text-decoration: underline; }
+
+/* ─── ACCESIBILIDAD ─── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    html { scroll-behavior: auto; }
+    .fade-up { opacity: 1; transform: none; }
+}
+.skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 400;
+    background: var(--accent); color: #fff; padding: 10px 18px; border-radius: 0 0 8px 0;
+}
+.skip-link:focus { left: 0; }
+
 /* ─── ANIMACIONES ─── */
 .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
@@ -882,6 +998,8 @@ footer { padding: 48px 56px 56px; position: relative; overflow: hidden; }
 </head>
 <body>
 
+<a href="#servicios" class="skip-link">Saltar al contenido</a>
+<div id="scroll-progress"></div>
 <div class="noise-overlay"></div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
@@ -1153,6 +1271,72 @@ footer { padding: 48px 56px 56px; position: relative; overflow: hidden; }
     </div>
 </section>
 
+<!-- COMPARACIÓN -->
+<section id="comparacion">
+    <div class="section-header">
+        <div>
+            <span class="section-kicker">Por qué Scale</span>
+            <h2 class="section-title fade-up">La cuenta es<br><span class="it">simple.</span></h2>
+        </div>
+        <div class="section-meta fade-up">
+            <p>Contratar una agencia grande, un freelancer o armar equipo interno — todos tienen un costo oculto. <strong>Así se compara Scale.</strong></p>
+            <div class="plus-icon">(+)</div>
+        </div>
+    </div>
+    <div class="comp-pad">
+        <div class="comp-wrap fade-up">
+            <table class="comp">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Agencia tradicional</th>
+                        <th>Freelancer</th>
+                        <th class="col-scale">Scale®</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Equipo completo<br><span style="font-weight:400;color:var(--muted);font-size:12px">estrategia + cámara + edición + publicación</span></td>
+                        <td>Sí, pero con procesos lentos y muchos intermediarios</td>
+                        <td class="no">✗ Una sola persona hace todo (o falta la mitad)</td>
+                        <td class="col-scale si">✓ Equipo dedicado, un solo punto de contacto</td>
+                    </tr>
+                    <tr>
+                        <td>Estrategia detrás del contenido</td>
+                        <td>A veces — suele cobrarse aparte</td>
+                        <td class="no">Rara vez — ejecuta lo que le pidas</td>
+                        <td class="col-scale si">✓ Siempre — nada se publica porque sí</td>
+                    </tr>
+                    <tr>
+                        <td>Constancia mensual</td>
+                        <td>Depende del contrato</td>
+                        <td class="no">Inconsistente — depende de su agenda</td>
+                        <td class="col-scale si">✓ Calendario mensual con entregas garantizadas</td>
+                    </tr>
+                    <tr>
+                        <td>Inversión</td>
+                        <td>Alta, con extras por cada cambio</td>
+                        <td>Variable, sin previsibilidad</td>
+                        <td class="col-scale si">Fija y clara: desde Gs. 3.000.000/mes</td>
+                    </tr>
+                    <tr>
+                        <td>Acompañamiento</td>
+                        <td>Reportes formales, poco contacto directo</td>
+                        <td class="no">✗ Termina el trabajo, termina la relación</td>
+                        <td class="col-scale si">✓ Reuniones, métricas y ajustes mes a mes</td>
+                    </tr>
+                    <tr>
+                        <td>Producción audiovisual propia</td>
+                        <td>Terceriza (y lo pagás vos)</td>
+                        <td class="no">✗ Equipo limitado</td>
+                        <td class="col-scale si">✓ Cámaras, luces, podcast y streaming propios</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
 <!-- CLIENTES -->
 <section id="clientes">
     <div class="clients-strip">
@@ -1170,6 +1354,10 @@ footer { padding: 48px 56px 56px; position: relative; overflow: hidden; }
             <span class="client-name">Devaro</span>
             <span class="client-name">CASU EAS</span>
         </div>
+    </div>
+    <div class="ig-strip">
+        <span>¿Querés ver nuestro trabajo en acción?</span>
+        <a href="https://www.instagram.com/scale.paraguay" target="_blank" rel="noopener">Mirá el portfolio en Instagram → @scale.paraguay</a>
     </div>
 </section>
 
@@ -1308,6 +1496,14 @@ footer { padding: 48px 56px 56px; position: relative; overflow: hidden; }
         </div>
     </div>
     <div class="contact-right fade-up">
+        <p class="quick-title">Respuestas rápidas — un toque y se abre WhatsApp</p>
+        <div class="quick-chips">
+            <a data-wa data-msg="Hola Scale! Quiero mi análisis de perfil digital gratuito." target="_blank" rel="noopener" class="quick-chip">🔍 Quiero mi análisis gratuito <span class="arrow">→</span></a>
+            <a data-wa data-msg="Hola Scale! Me interesa el plan Gold de Gs. 4.500.000/mes." target="_blank" rel="noopener" class="quick-chip">⭐ Me interesa el plan Gold <span class="arrow">→</span></a>
+            <a data-wa data-msg="Hola Scale! Quiero cotizar un podcast." target="_blank" rel="noopener" class="quick-chip">🎙 Cotizar un podcast <span class="arrow">→</span></a>
+            <a data-wa data-msg="Hola Scale! Quiero cotizar una cobertura de evento." target="_blank" rel="noopener" class="quick-chip">📸 Cobertura de evento <span class="arrow">→</span></a>
+            <a data-wa data-msg="Hola Scale! Quiero agendar una reunión para hablar de mi marca." target="_blank" rel="noopener" class="quick-chip">📅 Agendar una reunión <span class="arrow">→</span></a>
+        </div>
         <form id="contact-form">
             <div class="form-row">
                 <div class="form-field">
@@ -1368,6 +1564,25 @@ footer { padding: 48px 56px 56px; position: relative; overflow: hidden; }
     <svg width="28" height="28" fill="#fff" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.624-1.467A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.331 0-4.512-.656-6.375-1.793l-.456-.271-2.742.87.904-2.666-.299-.474A9.713 9.713 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
 </a>
 
+<!-- CTA STICKY -->
+<div id="sticky-cta" role="complementary">
+    <span class="txt">¿Listo para que tu marca <strong>crezca con estrategia</strong>?</span>
+    <a data-wa data-msg="Hola Scale! Quiero hablar sobre mi marca." target="_blank" rel="noopener" class="cta-btn">Hablá con nosotros →</a>
+    <button class="close-btn" onclick="closeSticky()" aria-label="Cerrar">✕</button>
+</div>
+
+<!-- VOLVER ARRIBA -->
+<a href="#hero" id="back-top" aria-label="Volver arriba">↑</a>
+
+<!--
+==================================================================
+ANALYTICS (opcional) — descomentar y completar cuando tengas los IDs
+==================================================================
+Google Analytics 4: pegar aquí el snippet con tu ID G-XXXXXXXXXX
+Meta Pixel (Instagram/Facebook Ads): pegar aquí el snippet con tu Pixel ID
+==================================================================
+-->
+
 <script>
 // ==================================================================
 // CONFIGURACIÓN — editá SOLO esta línea con el número de WhatsApp
@@ -1424,9 +1639,23 @@ if (window.matchMedia('(pointer: fine)').matches) {
     });
 }
 
-// Nav scroll
+// Nav scroll + barra de progreso + sticky CTA + volver arriba
+var stickyClosed = false;
+function closeSticky() {
+    stickyClosed = true;
+    document.getElementById('sticky-cta').classList.remove('show');
+    document.body.classList.remove('has-sticky');
+}
 window.addEventListener('scroll', function() {
-    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+    var y = window.scrollY;
+    document.getElementById('nav').classList.toggle('scrolled', y > 40);
+    var doc = document.documentElement;
+    var pct = y / (doc.scrollHeight - doc.clientHeight) * 100;
+    document.getElementById('scroll-progress').style.width = pct + '%';
+    var showSticky = !stickyClosed && y > 1400 && pct < 92;
+    document.getElementById('sticky-cta').classList.toggle('show', showSticky);
+    document.body.classList.toggle('has-sticky', showSticky);
+    document.getElementById('back-top').classList.toggle('show', y > 1200);
 });
 
 // Fade-up observer
