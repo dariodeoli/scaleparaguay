@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scale® — Consultora Digital de Marketing · Paraguay</title>
+<meta name="description" content="Scale Strategy Group — consultora digital de marketing en Paraguay. Estrategia, producción, grabación, edición, publicación y crecimiento para profesionales, marcas personales y empresas. No es suerte, es estrategia.">
+<meta property="og:title" content="Scale® — No es suerte, es estrategia.">
+<meta property="og:description" content="Consultoría de marketing + producción de contenido de nivel profesional. Servicios en todo Paraguay.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://scaleparaguay.com">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg: #0a0510;
+    --surface: #120818;
+    --surface-2: #1a0c22;
+    --border: #241330;
+    --border-2: #33203f;
+    --text: #ece6f0;
+    --muted: #5f5568;
+    --muted-2: #8d8296;
+    --accent: #8F1184;
+    --accent-2: #a833a0;
+    --accent-3: #4D065B;
+    --accent-soft: rgba(143,17,132,.13);
+    --white: #ffffff;
+    --green: #25D366;
+    --font-sans: 'Outfit', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+/* Custom cursor — solo desktop con mouse */
+.cursor, .cursor-ring { display: none; }
+@media (pointer: fine) {
+    body { cursor: none; }
+    a, button { cursor: none; }
+    .cursor {
+        display: block;
+        position: fixed; width: 10px; height: 10px;
+        background: var(--accent-2);
+        border-radius: 50%;
+        pointer-events: none; z-index: 9999;
+        transition: transform .15s ease, opacity .15s ease;
+    }
+    .cursor-ring {
+        display: block;
+        position: fixed; width: 36px; height: 36px;
+        border: 1px solid rgba(168,51,160,.4);
+        border-radius: 50%;
+        pointer-events: none; z-index: 9998;
+        transition: transform .35s ease, width .2s, height .2s, opacity .2s;
+    }
+}
+
+.noise-overlay {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0;
+    opacity: .025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 256px;
+}
+
+/* ─── NAV ─── */
+nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 56px;
+    border-bottom: 1px solid transparent;
+    transition: all .4s ease;
+}
+nav.scrolled {
+    background: rgba(10,5,16,.92);
+    backdrop-filter: blur(20px);
+    border-color: var(--border);
+}
+.nav-logo {
+    font-size: 22px; font-weight: 800; font-style: italic;
+    letter-spacing: -0.5px;
+    color: var(--white);
+    text-decoration: none;
+}
+.nav-logo span { color: var(--accent-2); font-style: normal; }
+.nav-center { display: flex; gap: 32px; }
+.nav-center a {
+    font-size: 12px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted-2);
+    text-decoration: none;
+    transition: color .2s;
+}
+.nav-center a:hover { color: var(--white); }
+.nav-right { display: flex; align-items: center; gap: 20px; }
+.status-dot {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 11px; color: var(--muted-2);
+    font-family: var(--font-mono);
+}
+.status-dot::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: #3ecf8e;
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+.nav-cta {
+    padding: 9px 20px;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: .5px;
+    border: none; border-radius: 100px;
+    text-decoration: none;
+    transition: background .2s, transform .15s;
+}
+.nav-cta:hover { background: var(--accent-2); transform: scale(1.03); }
+
+/* ─── BOTONES ─── */
+.btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 13px; font-weight: 600;
+    border-radius: 100px; border: none;
+    text-decoration: none;
+    font-family: var(--font-sans);
+    transition: background .2s, transform .15s, box-shadow .2s;
+}
+.btn-primary:hover {
+    background: var(--accent-2);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 32px rgba(143,17,132,.4);
+}
+.btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--muted-2);
+    font-size: 13px; font-weight: 500;
+    border-radius: 100px;
+    border: 1px solid var(--border-2);
+    text-decoration: none;
+    transition: all .2s;
+}
+.btn-ghost:hover { border-color: var(--accent-2); color: var(--white); }
+
+/* ─── HERO ─── */
+#hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 56px 60px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+}
+.hero-left { z-index: 2; }
+.hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--muted-2);
+    margin-bottom: 36px;
+}
+.hero-tag-dot { width: 4px; height: 4px; background: var(--accent-2); border-radius: 50%; }
+.hero-headline {
+    font-size: clamp(56px, 6.5vw, 104px);
+    font-weight: 800;
+    line-height: .95;
+    letter-spacing: -3px;
+    color: var(--white);
+    margin-bottom: 32px;
+}
+.hero-headline .light-word { font-weight: 300; color: var(--muted-2); }
+.hero-headline .accent-word { color: var(--accent-2); font-style: italic; }
+.hero-sub {
+    font-size: 15px; font-weight: 400;
+    color: var(--muted-2);
+    line-height: 1.7;
+    max-width: 430px;
+    margin-bottom: 44px;
+}
+.hero-sub strong { color: var(--text); font-weight: 600; }
+.hero-actions { display: flex; gap: 14px; align-items: center; margin-bottom: 64px; flex-wrap: wrap; }
+.hero-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    max-width: 500px;
+}
+.hero-meta span {
+    font-size: 11px; color: var(--muted);
+    font-family: var(--font-mono);
+    letter-spacing: .5px;
+}
+
+/* Blob hero */
+.hero-right {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    height: 100%;
+}
+.blob-wrap { position: relative; width: 420px; height: 420px; }
+.blob-glow {
+    position: absolute; inset: -60px;
+    background: radial-gradient(ellipse, rgba(143,17,132,.22) 0%, transparent 70%);
+    filter: blur(40px);
+    animation: glow-pulse 4s ease-in-out infinite;
+}
+@keyframes glow-pulse {
+    0%,100% { opacity:.6; transform: scale(1); }
+    50% { opacity:1; transform: scale(1.1); }
+}
+@keyframes blob-morph {
+    0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    50% { border-radius: 50% 60% 30% 60% / 40% 30% 70% 60%; }
+    75% { border-radius: 40% 30% 60% 70% / 60% 70% 30% 40%; }
+    100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+.blob-inner {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #3c0947 0%, #23052c 30%, #12031a 60%, #4D065B 100%);
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    animation: blob-morph 8s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+}
+.blob-inner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(143,17,132,.55) 0%, transparent 40%, rgba(77,6,91,.5) 70%, transparent 100%);
+}
+.blob-inner::after {
+    content: '';
+    position: absolute; top: 20%; left: 10%; right: 20%; bottom: 30%;
+    background: radial-gradient(circle, rgba(209,106,196,.2) 0%, transparent 70%);
+    filter: blur(20px);
+}
+.blob-word {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px; font-weight: 800; font-style: italic;
+    color: rgba(255,255,255,.9);
+    letter-spacing: -3px;
+    z-index: 2;
+}
+.blob-label {
+    position: absolute; bottom: -48px; right: 0;
+    font-size: 72px; font-weight: 800;
+    color: var(--white);
+    letter-spacing: -4px;
+    line-height: 1;
+}
+.blob-label .yr-accent { color: var(--muted); font-weight: 300; }
+.hero-services-list {
+    position: absolute; right: 0; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 8px;
+    z-index: 3;
+}
+.hero-svc-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; color: var(--muted-2);
+    font-family: var(--font-mono);
+}
+.hero-svc-num { font-size: 9px; color: var(--accent-2); width: 22px; }
+
+/* ─── STATS ─── */
+#stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--border);
+}
+.stat-item {
+    padding: 40px 48px;
+    border-right: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+.stat-item:last-child { border-right: none; }
+.stat-item::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity .3s;
+}
+.stat-item:hover::before { opacity: 1; }
+.stat-num {
+    font-size: 48px; font-weight: 800;
+    letter-spacing: -2px;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 8px;
+}
+.stat-num sup { font-size: 24px; color: var(--accent-2); vertical-align: super; margin-left: 2px; }
+.stat-label {
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted);
+}
+.stat-brand { display: flex; flex-direction: column; gap: 10px; }
+.stat-brand-name {
+    font-size: 22px; font-weight: 800; font-style: italic;
+    color: var(--white); letter-spacing: -1px;
+}
+.stat-brand-name span { color: var(--accent-2); font-style: normal; }
+.stat-brand-desc { font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 220px; }
+
+/* ─── SECTION HEADERS ─── */
+.section-header {
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: start;
+    padding: 72px 56px 48px;
+    border-bottom: 1px solid var(--border);
+    gap: 40px;
+}
+.section-kicker {
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 2.5px;
+    color: var(--accent-2);
+    font-family: var(--font-mono);
+    margin-bottom: 16px;
+    display: block;
+}
+.section-title {
+    font-size: clamp(40px, 4.5vw, 64px);
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -2px;
+    line-height: 1;
+}
+.section-title .dot { color: var(--accent-2); }
+.section-title .it { font-style: italic; font-weight: 800; color: var(--accent-2); }
+.section-meta { display: flex; align-items: flex-start; justify-content: space-between; padding-top: 8px; }
+.section-meta p { font-size: 15px; color: var(--muted-2); line-height: 1.7; max-width: 400px; }
+.section-meta p strong { color: var(--text); font-weight: 600; }
+.plus-icon {
+    width: 32px; height: 32px;
+    border: 1px solid var(--border-2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--muted);
+    font-family: var(--font-mono);
+    flex-shrink: 0; margin-left: 24px;
+}
+
+/* ─── SERVICES ─── */
+#servicios { border-bottom: 1px solid var(--border); }
+.svc-row {
+    display: grid; grid-template-columns: 80px 1.1fr 1fr 40px;
+    align-items: center;
+    padding: 30px 56px;
+    border-bottom: 1px solid var(--border);
+    transition: background .2s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+.svc-row:last-child { border-bottom: none; }
+.svc-row::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--accent-2);
+    transform: scaleY(0);
+    transition: transform .25s ease;
+    transform-origin: bottom;
+}
+.svc-row:hover { background: var(--surface); }
+.svc-row:hover::before { transform: scaleY(1); }
+.svc-num { font-size: 11px; color: var(--muted); font-family: var(--font-mono); letter-spacing: 1px; }
+.svc-name-wrap { display: flex; align-items: center; gap: 18px; }
+.svc-thumb {
+    width: 52px; height: 40px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.svc-name {
+    font-size: clamp(19px, 2vw, 26px);
+    font-weight: 700; color: var(--white);
+    letter-spacing: -1px;
+}
+.svc-desc { font-size: 13px; color: var(--muted-2); line-height: 1.6; padding-right: 16px; }
+.svc-arrow {
+    font-size: 18px; color: var(--muted);
+    text-align: right;
+    transition: color .2s, transform .2s;
+}
+.svc-row:hover .svc-arrow { color: var(--accent-2); transform: translate(4px, -4px); }
+
+/* ─── PARA QUIÉN ─── */
+#para-quien { border-bottom: 1px solid var(--border); }
+.who-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.who-cell {
+    padding: 48px;
+    border-right: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: background .25s;
+}
+.who-cell:last-child { border-right: none; }
+.who-cell:hover { background: var(--surface); }
+.who-cell::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 90%);
+    opacity: 0; transition: opacity .3s;
+}
+.who-cell:hover::after { opacity: 1; }
+.who-num { font-size: 11px; color: var(--accent-2); font-family: var(--font-mono); letter-spacing: 2px; margin-bottom: 20px; display: block; }
+.who-title { font-size: 26px; font-weight: 700; color: var(--white); letter-spacing: -1px; margin-bottom: 14px; }
+.who-desc { font-size: 13.5px; color: var(--muted-2); line-height: 1.7; margin-bottom: 24px; }
+.who-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.who-list li {
+    font-size: 12.5px; color: var(--text);
+    display: flex; align-items: flex-start; gap: 10px;
+    line-height: 1.5;
+}
+.who-list li::before {
+    content: '→';
+    color: var(--accent-2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+/* ─── PROCESO ─── */
+#proceso { border-bottom: 1px solid var(--border); }
+.step-row {
+    display: grid; grid-template-columns: 120px 1fr 1.2fr;
+    gap: 32px;
+    padding: 40px 56px;
+    border-bottom: 1px solid var(--border);
+    transition: background .2s;
+    position: relative; overflow: hidden;
+}
+.step-row:last-child { border-bottom: none; }
+.step-row::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px; background: var(--accent-2);
+    transform: scaleY(0); transition: transform .25s ease; transform-origin: top;
+}
+.step-row:hover { background: var(--surface); }
+.step-row:hover::before { transform: scaleY(1); }
+.step-num {
+    font-size: 44px; font-weight: 300;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    line-height: 1;
+}
+.step-row:hover .step-num { color: var(--accent-2); }
+.step-title-wrap .step-tag {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--accent-2); font-family: var(--font-mono);
+    display: block; margin-bottom: 8px;
+}
+.step-title { font-size: 24px; font-weight: 700; color: var(--white); letter-spacing: -1px; }
+.step-desc { font-size: 14px; color: var(--muted-2); line-height: 1.7; }
+.step-desc strong { color: var(--text); font-weight: 600; }
+
+/* ─── MARQUEE ─── */
+.marquee-wrap {
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0;
+    position: relative;
+}
+.marquee-wrap::before, .marquee-wrap::after {
+    content: '';
+    position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2;
+    pointer-events: none;
+}
+.marquee-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+.marquee-wrap::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+.marquee-track {
+    display: flex; gap: 0;
+    width: max-content;
+    animation: marquee-left 24s linear infinite;
+}
+.marquee-text {
+    font-size: 88px; font-weight: 800;
+    letter-spacing: -4px; line-height: 1;
+    color: var(--white);
+    opacity: .05;
+    white-space: nowrap;
+    padding-right: 48px;
+    text-transform: uppercase;
+}
+@keyframes marquee-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ─── CLIENTES ─── */
+#clientes { border-bottom: 1px solid var(--border); }
+.clients-strip { overflow: hidden; position: relative; }
+.clients-track {
+    display: flex; gap: 0; width: max-content;
+    animation: marquee-left 20s linear infinite;
+    padding: 30px 0;
+}
+.client-name {
+    font-size: 14px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 2.5px;
+    color: var(--muted-2);
+    padding: 0 44px;
+    border-right: 1px solid var(--border);
+    white-space: nowrap;
+    transition: color .2s;
+}
+.client-name:hover { color: var(--white); }
+
+/* ─── PLANES ─── */
+#planes { border-bottom: 1px solid var(--border); }
+.plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.plan-cell {
+    padding: 48px 44px;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    position: relative;
+    transition: background .25s;
+}
+.plan-cell:last-child { border-right: none; }
+.plan-cell:hover { background: var(--surface); }
+.plan-cell.featured { background: var(--surface); }
+.plan-cell.featured::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.plan-badge {
+    position: absolute; top: 24px; right: 24px;
+    font-size: 9px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--accent-2);
+    padding: 5px 12px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(168,51,160,.3);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+}
+.plan-tier { font-size: 11px; color: var(--muted); font-family: var(--font-mono); letter-spacing: 2px; margin-bottom: 14px; }
+.plan-name { font-size: 30px; font-weight: 800; color: var(--white); letter-spacing: -1.5px; margin-bottom: 4px; }
+.plan-tagline { font-size: 12.5px; color: var(--accent-2); font-weight: 500; margin-bottom: 26px; }
+.plan-price { font-size: 32px; font-weight: 800; color: var(--white); letter-spacing: -1.5px; line-height: 1; }
+.plan-price .cur { font-size: 15px; font-weight: 500; color: var(--muted-2); letter-spacing: 0; }
+.plan-period { font-size: 11px; color: var(--muted); font-family: var(--font-mono); margin-top: 6px; margin-bottom: 26px; }
+.plan-ideal {
+    font-size: 12.5px; color: var(--muted-2); line-height: 1.6;
+    padding: 14px 16px;
+    background: var(--accent-soft);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 28px;
+}
+.plan-list { list-style: none; display: flex; flex-direction: column; gap: 11px; flex: 1; margin-bottom: 32px; }
+.plan-list li {
+    font-size: 13px; color: var(--text);
+    display: flex; align-items: flex-start; gap: 10px;
+    line-height: 1.5;
+}
+.plan-list li::before {
+    content: '✓';
+    color: var(--accent-2);
+    font-size: 11px;
+    font-family: var(--font-mono);
+    margin-top: 2px;
+}
+.plan-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-size: 13px; font-weight: 600;
+    text-decoration: none;
+    transition: all .2s;
+    border: 1px solid var(--border-2);
+    color: var(--text);
+}
+.plan-cta:hover { border-color: var(--accent-2); color: var(--white); }
+.plan-cta.solid { background: var(--accent); border-color: var(--accent); color: #fff; }
+.plan-cta.solid:hover { background: var(--accent-2); box-shadow: 0 8px 32px rgba(143,17,132,.4); }
+.plans-note {
+    padding: 22px 56px;
+    font-size: 12px; color: var(--muted);
+    font-family: var(--font-mono);
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+.plans-note a { color: var(--accent-2); text-decoration: none; }
+.plans-note a:hover { text-decoration: underline; }
+
+/* ─── FAQ ─── */
+#faq { border-bottom: 1px solid var(--border); }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item:last-child { border-bottom: none; }
+.faq-q {
+    width: 100%;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 26px 56px;
+    background: none; border: none;
+    text-align: left;
+    font-family: var(--font-sans);
+    font-size: 17px; font-weight: 600;
+    color: var(--white);
+    transition: background .2s;
+}
+.faq-q:hover { background: var(--surface); }
+.faq-q .faq-icon {
+    font-family: var(--font-mono);
+    font-size: 14px; color: var(--accent-2);
+    transition: transform .3s;
+    flex-shrink: 0;
+}
+.faq-a {
+    display: none;
+    padding: 0 56px 28px;
+    font-size: 14px; color: var(--muted-2);
+    line-height: 1.75;
+    max-width: 760px;
+}
+.faq-item.open .faq-a { display: block; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+/* ─── CONTACTO ─── */
+#contacto {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+    min-height: 620px;
+}
+.contact-left {
+    padding: 72px 56px;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; justify-content: space-between;
+    gap: 48px;
+}
+.contact-label {
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 2px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    margin-bottom: 24px;
+}
+.contact-title {
+    font-size: clamp(52px, 6vw, 84px);
+    font-weight: 800; letter-spacing: -4px;
+    color: var(--white); line-height: .9;
+    margin-bottom: 28px;
+}
+.contact-title span { color: var(--accent-2); }
+.contact-desc { font-size: 14px; color: var(--muted-2); line-height: 1.7; max-width: 380px; margin-bottom: 32px; }
+.contact-quote {
+    font-size: 15px; font-weight: 600; font-style: italic;
+    color: var(--accent-2);
+    letter-spacing: .3px;
+}
+.contact-meta { display: flex; flex-direction: column; gap: 8px; }
+.contact-meta a, .contact-meta span {
+    font-family: var(--font-mono);
+    font-size: 13px; color: var(--muted-2);
+    text-decoration: none;
+    transition: color .2s;
+}
+.contact-meta a:hover { color: var(--accent-2); }
+.contact-right { padding: 72px 56px; display: flex; flex-direction: column; justify-content: center; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label {
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--muted);
+    font-weight: 500; font-family: var(--font-mono);
+}
+.form-field input, .form-field textarea, .form-field select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: var(--font-sans);
+    font-size: 14px; color: var(--text);
+    outline: none;
+    transition: border-color .2s;
+    width: 100%;
+    resize: none;
+    appearance: none;
+}
+.form-field input:focus, .form-field textarea:focus, .form-field select:focus { border-color: var(--accent-2); }
+.form-field input::placeholder, .form-field textarea::placeholder { color: var(--muted); }
+.form-full { margin-bottom: 16px; }
+.form-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 24px; gap: 20px; }
+.form-note { font-size: 10px; color: var(--muted); font-family: var(--font-mono); max-width: 240px; line-height: 1.5; }
+
+/* ─── FOOTER ─── */
+footer { padding: 48px 56px 56px; position: relative; overflow: hidden; }
+.footer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.footer-logo {
+    font-size: 24px; font-weight: 800; font-style: italic;
+    color: var(--white); letter-spacing: -1px;
+    text-decoration: none;
+}
+.footer-logo span { color: var(--accent-2); font-style: normal; }
+.footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
+.footer-links a {
+    font-size: 12px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .2s;
+}
+.footer-links a:hover { color: var(--accent-2); }
+.footer-divider { height: 1px; background: var(--border); margin-bottom: 32px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.footer-copy, .footer-location { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+.footer-bg-text {
+    position: absolute; bottom: -30px; left: 50%;
+    transform: translateX(-50%);
+    font-size: min(20vw, 240px); font-weight: 800; font-style: italic;
+    color: var(--white); opacity: .025;
+    letter-spacing: -10px; white-space: nowrap;
+    pointer-events: none; user-select: none;
+    line-height: 1;
+}
+
+/* ─── WHATSAPP FLOTANTE ─── */
+.wa-float {
+    position: fixed; bottom: 24px; right: 24px; z-index: 200;
+    width: 56px; height: 56px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 28px rgba(37,211,102,.35);
+    transition: transform .25s, box-shadow .25s;
+    animation: wa-bounce 2.6s ease-in-out infinite;
+}
+.wa-float:hover { transform: scale(1.1); box-shadow: 0 10px 36px rgba(37,211,102,.5); }
+@keyframes wa-bounce { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+
+/* ─── ANIMACIONES ─── */
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 960px) {
+    .who-grid, .plans-grid { grid-template-columns: 1fr; }
+    .who-cell, .plan-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .who-cell:last-child, .plan-cell:last-child { border-bottom: none; }
+    .svc-row { grid-template-columns: 60px 1fr 40px; }
+    .svc-desc { display: none; }
+    .step-row { grid-template-columns: 80px 1fr; }
+    .step-desc { grid-column: 2; }
+}
+@media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-center, .status-dot { display: none; }
+    #hero { grid-template-columns: 1fr; padding: 110px 20px 48px; }
+    .hero-right { display: none; }
+    .hero-headline { letter-spacing: -2px; }
+    #stats { grid-template-columns: repeat(2, 1fr); }
+    .stat-item { padding: 28px 24px; }
+    .stat-item:nth-child(2n) { border-right: none; }
+    .stat-item:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+    .section-header { grid-template-columns: 1fr; padding: 48px 20px 36px; gap: 20px; }
+    .svc-row { padding: 22px 20px; }
+    .step-row { padding: 32px 20px; }
+    .who-cell, .plan-cell { padding: 36px 24px; }
+    .faq-q { padding: 22px 20px; font-size: 15px; }
+    .faq-a { padding: 0 20px 24px; }
+    #contacto { grid-template-columns: 1fr; }
+    .contact-left { padding: 48px 20px; border-right: none; border-bottom: 1px solid var(--border); }
+    .contact-right { padding: 48px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 40px 20px 48px; }
+    .footer-top, .footer-bottom { flex-direction: column; gap: 20px; align-items: flex-start; }
+    .plans-note { padding: 18px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="noise-overlay"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+    <a href="#hero" class="nav-logo">scale<span>®</span></a>
+    <div class="nav-center">
+        <a href="#servicios">Servicios</a>
+        <a href="#para-quien">Para quién</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#planes">Planes</a>
+        <a href="#contacto">Contacto</a>
+    </div>
+    <div class="nav-right">
+        <div class="status-dot">Disponible ahora</div>
+        <a data-wa data-msg="Hola Scale! Quiero hablar sobre mi marca." target="_blank" rel="noopener" class="nav-cta">Hablemos →</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+    <div class="hero-left fade-up">
+        <div class="hero-tag">
+            <span class="hero-tag-dot"></span>
+            Consultora Digital · Paraguay
+        </div>
+        <h1 class="hero-headline">
+            Nunca fue<br>
+            <span class="light-word">suerte.</span><br>
+            <span class="accent-word">Fue estrategia.</span>
+        </h1>
+        <p class="hero-sub">
+            Somos <strong>Scale</strong>, la consultora que lleva tu marca de publicar por publicar
+            a crecer con dirección: estrategia, producción, grabación, edición,
+            publicación y acompañamiento — <strong>todo con un mismo equipo.</strong>
+        </p>
+        <div class="hero-actions">
+            <a data-wa data-msg="Hola Scale! Quiero mi análisis de perfil digital gratuito." target="_blank" rel="noopener" class="btn-primary">Pedí tu análisis gratuito →</a>
+            <a href="#planes" class="btn-ghost">Ver planes</a>
+        </div>
+        <div class="hero-meta">
+            <span>scale® · consultora digital</span>
+            <span>Servicios en todo Paraguay</span>
+        </div>
+    </div>
+    <div class="hero-right">
+        <div class="blob-wrap">
+            <div class="blob-glow"></div>
+            <div class="blob-inner"></div>
+            <div class="blob-word">scale</div>
+            <div class="blob-label"><span class="yr-accent">© </span>2026</div>
+        </div>
+        <div class="hero-services-list">
+            <div class="hero-svc-item"><span class="hero-svc-num">01.</span> Estrategia</div>
+            <div class="hero-svc-item"><span class="hero-svc-num">02.</span> Producción</div>
+            <div class="hero-svc-item"><span class="hero-svc-num">03.</span> Crecimiento</div>
+        </div>
+    </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+    <div class="stat-item fade-up">
+        <div class="stat-num">50<sup>+</sup></div>
+        <div class="stat-label">Marcas Acompañadas</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:.08s">
+        <div class="stat-num">100<sup>+</sup></div>
+        <div class="stat-label">Contenidos / Mes</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:.16s">
+        <div class="stat-num">3<sup>+</sup></div>
+        <div class="stat-label">Años de Experiencia</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:.24s">
+        <div class="stat-brand">
+            <div class="stat-brand-name">scale<span>®</span></div>
+            <div class="stat-brand-desc">Consultora digital diseñada para hacer crecer marcas a largo plazo.</div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+    <div class="section-header">
+        <div>
+            <span class="section-kicker">Capacidad full service</span>
+            <h2 class="section-title fade-up">Servicios<span class="dot">.</span></h2>
+        </div>
+        <div class="section-meta fade-up">
+            <p>De la estrategia al último frame. Todo lo que tu marca necesita para crecer en digital, <strong>sin coordinar cinco proveedores distintos.</strong></p>
+            <div class="plus-icon">(+)</div>
+        </div>
+    </div>
+
+    <a class="svc-row fade-up" data-wa data-msg="Hola Scale! Quiero consultoría y estrategia para mi marca." target="_blank" rel="noopener">
+        <div class="svc-num">01</div>
+        <div class="svc-name-wrap">
+            <div class="svc-thumb"><svg width="20" height="20" fill="none" stroke="#a833a0" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+            <span class="svc-name">Consultoría & Estrategia</span>
+        </div>
+        <div class="svc-desc">Diagnóstico de marca, posicionamiento y plan de contenidos con objetivos claros. Primero pensamos, después publicamos.</div>
+        <div class="svc-arrow">↗</div>
+    </a>
+    <a class="svc-row fade-up" data-wa data-msg="Hola Scale! Quiero info sobre producción y grabación." target="_blank" rel="noopener">
+        <div class="svc-num">02</div>
+        <div class="svc-name-wrap">
+            <div class="svc-thumb"><svg width="20" height="20" fill="none" stroke="#a833a0" stroke-width="1.5" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+            <span class="svc-name">Producción & Grabación</span>
+        </div>
+        <div class="svc-desc">Jornadas de grabación con equipo profesional: cámaras, luces y dirección. En tu negocio o donde haga falta.</div>
+        <div class="svc-arrow">↗</div>
+    </a>
+    <a class="svc-row fade-up" data-wa data-msg="Hola Scale! Quiero info sobre edición profesional." target="_blank" rel="noopener">
+        <div class="svc-num">03</div>
+        <div class="svc-name-wrap">
+            <div class="svc-thumb"><svg width="20" height="20" fill="none" stroke="#a833a0" stroke-width="1.5" viewBox="0 0 24 24"><path d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4M3 12h18"/></svg></div>
+            <span class="svc-name">Edición Profesional</span>
+        </div>
+        <div class="svc-desc">Reels, carruseles y videos con tu identidad visual: transiciones, motion graphics y color grading premium.</div>
+        <div class="svc-arrow">↗</div>
+    </a>
+    <a class="svc-row fade-up" data-wa data-msg="Hola Scale! Quiero info sobre publicación y calendarización." target="_blank" rel="noopener">
+        <div class="svc-num">04</div>
+        <div class="svc-name-wrap">
+            <div class="svc-thumb"><svg width="20" height="20" fill="none" stroke="#a833a0" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+            <span class="svc-name">Publicación & Calendario</span>
+        </div>
+        <div class="svc-desc">Calendarización mensual estratégica, copies pensados y publicación constante. Tu marca activa, sin que muevas un dedo.</div>
+        <div class="svc-arrow">↗</div>
+    </a>
+    <a class="svc-row fade-up" data-wa data-msg="Hola Scale! Quiero info sobre crecimiento y acompañamiento." target="_blank" rel="noopener">
+        <div class="svc-num">05</div>
+        <div class="svc-name-wrap">
+            <div class="svc-thumb"><svg width="20" height="20" fill="none" stroke="#a833a0" stroke-width="1.5" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+            <span class="svc-name">Crecimiento & Acompañamiento</span>
+        </div>
+        <div class="svc-desc">Revisión de métricas, reuniones de estrategia y ajustes mes a mes. No te entregamos y desaparecemos.</div>
+        <div class="svc-arrow">↗</div>
+    </a>
+    <a class="svc-row fade-up" data-wa data-msg="Hola Scale! Quiero cotizar una cobertura de evento." target="_blank" rel="noopener">
+        <div class="svc-num">06</div>
+        <div class="svc-name-wrap">
+            <div class="svc-thumb"><svg width="20" height="20" fill="none" stroke="#a833a0" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg></div>
+            <span class="svc-name">Coberturas de Eventos</span>
+        </div>
+        <div class="svc-desc">Lanzamientos, activaciones, ferias y eventos corporativos en foto y video, con entrega ágil para tus redes.</div>
+        <div class="svc-arrow">↗</div>
+    </a>
+    <a class="svc-row fade-up" data-wa data-msg="Hola Scale! Quiero producir un podcast." target="_blank" rel="noopener">
+        <div class="svc-num">07</div>
+        <div class="svc-name-wrap">
+            <div class="svc-thumb"><svg width="20" height="20" fill="none" stroke="#a833a0" stroke-width="1.5" viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m-4 0h8M12 15a3 3 0 01-3-3V5a3 3 0 116 0v7a3 3 0 01-3 3z"/></svg></div>
+            <span class="svc-name">Podcast</span>
+        </div>
+        <div class="svc-desc">Producción integral: set, grabación multicámara, edición completa y clips cortos listos para viralizar.</div>
+        <div class="svc-arrow">↗</div>
+    </a>
+    <a class="svc-row fade-up" data-wa data-msg="Hola Scale! Quiero info sobre streaming profesional." target="_blank" rel="noopener">
+        <div class="svc-num">08</div>
+        <div class="svc-name-wrap">
+            <div class="svc-thumb"><svg width="20" height="20" fill="none" stroke="#a833a0" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07"/><circle cx="12" cy="12" r="1" fill="#a833a0"/></svg></div>
+            <span class="svc-name">Streaming</span>
+        </div>
+        <div class="svc-desc">Transmisiones en vivo con calidad profesional: multicámara, gráfica en pantalla y operación técnica completa.</div>
+        <div class="svc-arrow">↗</div>
+    </a>
+</section>
+
+<!-- PARA QUIÉN -->
+<section id="para-quien">
+    <div class="section-header">
+        <div>
+            <span class="section-kicker">Para quién trabajamos</span>
+            <h2 class="section-title fade-up">Tu rubro,<br><span class="it">tu estrategia.</span></h2>
+        </div>
+        <div class="section-meta fade-up">
+            <p>Cada marca necesita un enfoque distinto. Trabajamos con tres perfiles — y para cada uno, <strong>una estrategia a medida.</strong></p>
+            <div class="plus-icon">(+)</div>
+        </div>
+    </div>
+    <div class="who-grid">
+        <div class="who-cell fade-up">
+            <span class="who-num">(01)</span>
+            <h3 class="who-title">Profesionales</h3>
+            <p class="who-desc">Médicos, abogados, arquitectos, consultores. Construimos tu autoridad con contenido que educa y genera confianza — para que el cliente llegue ya convencido.</p>
+            <ul class="who-list">
+                <li>Posicionamiento como referente</li>
+                <li>Contenido educativo con guion</li>
+                <li>Imagen profesional cuidada</li>
+            </ul>
+        </div>
+        <div class="who-cell fade-up" style="transition-delay:.08s">
+            <span class="who-num">(02)</span>
+            <h3 class="who-title">Marca Personal</h3>
+            <p class="who-desc">Emprendedores, creadores y líderes que quieren escalar su presencia. Estrategia, grabación y edición para que tu nombre pese en tu industria.</p>
+            <ul class="who-list">
+                <li>Narrativa y línea editorial propia</li>
+                <li>Podcast y formatos largos</li>
+                <li>Crecimiento con acompañamiento</li>
+            </ul>
+        </div>
+        <div class="who-cell fade-up" style="transition-delay:.16s">
+            <span class="who-num">(03)</span>
+            <h3 class="who-title">Empresas</h3>
+            <p class="who-desc">Pymes y marcas en crecimiento. Un equipo creativo completo, sin el costo de armar un departamento de marketing interno.</p>
+            <ul class="who-list">
+                <li>Volumen mensual constante</li>
+                <li>Coberturas y campañas</li>
+                <li>Reportes y reuniones de revisión</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+    <div class="marquee-track">
+        <span class="marquee-text">Estrategia · Producción · Podcast · Streaming · Coberturas · Crecimiento · </span>
+        <span class="marquee-text">Estrategia · Producción · Podcast · Streaming · Coberturas · Crecimiento · </span>
+    </div>
+</div>
+
+<!-- PROCESO -->
+<section id="proceso">
+    <div class="section-header">
+        <div>
+            <span class="section-kicker">Cómo funciona</span>
+            <h2 class="section-title fade-up">Cuatro pasos<span class="dot">.</span></h2>
+        </div>
+        <div class="section-meta fade-up">
+            <p>Sin vueltas ni meses de onboarding. Arrancamos con un análisis y en semanas tu marca ya está <strong>produciendo con estrategia.</strong></p>
+            <div class="plus-icon">(+)</div>
+        </div>
+    </div>
+
+    <div class="step-row fade-up">
+        <div class="step-num">01</div>
+        <div class="step-title-wrap">
+            <span class="step-tag">Análisis</span>
+            <h3 class="step-title">Analizamos tu perfil digital</h3>
+        </div>
+        <p class="step-desc">Revisamos tu presencia actual, tu competencia y tus oportunidades. El análisis es <strong>gratuito</strong> si tenés intención real de trabajar con nosotros.</p>
+    </div>
+    <div class="step-row fade-up">
+        <div class="step-num">02</div>
+        <div class="step-title-wrap">
+            <span class="step-tag">Estrategia</span>
+            <h3 class="step-title">Definimos el plan de tu marca</h3>
+        </div>
+        <p class="step-desc">Posicionamiento, línea de contenido, formatos y calendario. Cada pieza responde a un objetivo — <strong>nada sale porque sí.</strong></p>
+    </div>
+    <div class="step-row fade-up">
+        <div class="step-num">03</div>
+        <div class="step-title-wrap">
+            <span class="step-tag">Producción</span>
+            <h3 class="step-title">Grabamos y editamos todo</h3>
+        </div>
+        <p class="step-desc">Jornadas de grabación con nuestro equipo y edición profesional con tu identidad visual. Vos ponés tu negocio; <strong>la producción la ponemos nosotros.</strong></p>
+    </div>
+    <div class="step-row fade-up">
+        <div class="step-num">04</div>
+        <div class="step-title-wrap">
+            <span class="step-tag">Crecimiento</span>
+            <h3 class="step-title">Publicamos, medimos y crecemos</h3>
+        </div>
+        <p class="step-desc">Publicación calendarizada, revisión de métricas y reuniones de acompañamiento. <strong>Ajustamos mes a mes</strong> para que los números suban.</p>
+    </div>
+</section>
+
+<!-- CLIENTES -->
+<section id="clientes">
+    <div class="clients-strip">
+        <div class="clients-track">
+            <span class="client-name">Bristol</span>
+            <span class="client-name">Bucan Store</span>
+            <span class="client-name">Nde Barba</span>
+            <span class="client-name">Luis Sushi</span>
+            <span class="client-name">Devaro</span>
+            <span class="client-name">CASU EAS</span>
+            <span class="client-name">Bristol</span>
+            <span class="client-name">Bucan Store</span>
+            <span class="client-name">Nde Barba</span>
+            <span class="client-name">Luis Sushi</span>
+            <span class="client-name">Devaro</span>
+            <span class="client-name">CASU EAS</span>
+        </div>
+    </div>
+</section>
+
+<!-- PLANES -->
+<section id="planes">
+    <div class="section-header">
+        <div>
+            <span class="section-kicker">Planes e inversión</span>
+            <h2 class="section-title fade-up">Un plan para<br>cada <span class="it">etapa.</span></h2>
+        </div>
+        <div class="section-meta fade-up">
+            <p>Todos los planes incluyen estrategia, producción, edición y acompañamiento. <strong>Plazo mínimo de 3 meses.</strong></p>
+            <div class="plus-icon">(+)</div>
+        </div>
+    </div>
+
+    <div class="plans-grid">
+        <!-- SILVER -->
+        <div class="plan-cell fade-up">
+            <div class="plan-tier">TIER · 01</div>
+            <h3 class="plan-name">Silver</h3>
+            <p class="plan-tagline">Para arrancar en serio</p>
+            <div class="plan-price"><span class="cur">Gs.</span> 3.000.000</div>
+            <div class="plan-period">/ mes</div>
+            <div class="plan-ideal">Ideal para emprendedores que quieren dejar de improvisar en redes.</div>
+            <ul class="plan-list">
+                <li>10 contenidos mensuales (reels o carruseles)</li>
+                <li>1 día de grabación</li>
+                <li>Edición profesional con identidad visual</li>
+                <li>Calendarización mensual</li>
+                <li>Análisis de perfil digital previo</li>
+                <li>Acompañamiento creativo mensual</li>
+            </ul>
+            <a data-wa data-msg="Hola Scale! Me interesa el plan Silver." target="_blank" rel="noopener" class="plan-cta">Consultar por Silver →</a>
+        </div>
+        <!-- GOLD -->
+        <div class="plan-cell featured fade-up" style="transition-delay:.08s">
+            <div class="plan-badge">★ El más elegido</div>
+            <div class="plan-tier">TIER · 02</div>
+            <h3 class="plan-name">Gold</h3>
+            <p class="plan-tagline">Para crecer con constancia</p>
+            <div class="plan-price"><span class="cur">Gs.</span> 4.500.000</div>
+            <div class="plan-period">/ mes</div>
+            <div class="plan-ideal">Ideal para negocios en crecimiento activo que ya validaron su producto.</div>
+            <ul class="plan-list">
+                <li>15 contenidos mensuales (reels, carruseles y fotos)</li>
+                <li>2 días de grabación</li>
+                <li>Edición con identidad visual y transiciones</li>
+                <li>Estrategia básica de contenido</li>
+                <li>Calendarización mensual estratégica</li>
+                <li>Reunión mensual de revisión</li>
+                <li>Acompañamiento creativo continuo</li>
+            </ul>
+            <a data-wa data-msg="Hola Scale! Me interesa el plan Gold." target="_blank" rel="noopener" class="plan-cta solid">Quiero el Gold →</a>
+        </div>
+        <!-- DIAMOND -->
+        <div class="plan-cell fade-up" style="transition-delay:.16s">
+            <div class="plan-tier">TIER · 03</div>
+            <h3 class="plan-name">Diamond</h3>
+            <p class="plan-tagline">Para escalar de verdad</p>
+            <div class="plan-price"><span class="cur">Gs.</span> 7.000.000</div>
+            <div class="plan-period">/ mes</div>
+            <div class="plan-ideal">Ideal para marcas medianas y marcas personales en plena escala.</div>
+            <ul class="plan-list">
+                <li>20–25 contenidos mensuales</li>
+                <li>3–4 días de grabación</li>
+                <li>Edición premium: motion graphics y color grading</li>
+                <li>Estrategia de contenido mensual completa</li>
+                <li>Community management parcial incluido</li>
+                <li>Reunión mensual de estrategia con el CEO</li>
+                <li>Reporte de métricas + prioridad 24hs</li>
+            </ul>
+            <a data-wa data-msg="Hola Scale! Me interesa el plan Diamond." target="_blank" rel="noopener" class="plan-cta">Consultar por Diamond →</a>
+        </div>
+    </div>
+    <div class="plans-note">
+        ¿Necesitás algo distinto? Coberturas, podcast, streaming o proyectos a medida — <a data-wa data-msg="Hola Scale! Quiero cotizar un proyecto a medida." target="_blank" rel="noopener">hablemos y lo cotizamos</a>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+    <div class="section-header">
+        <div>
+            <span class="section-kicker">Dudas frecuentes</span>
+            <h2 class="section-title fade-up">Antes de<br><span class="it">arrancar.</span></h2>
+        </div>
+        <div class="section-meta fade-up">
+            <p>Lo que todos nos preguntan antes de empezar. Si te queda alguna duda, <strong>escribinos directo por WhatsApp.</strong></p>
+            <div class="plus-icon">(+)</div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">¿Cómo arrancamos a trabajar juntos?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Nos escribís por WhatsApp, hacemos un análisis de tu perfil digital (gratuito si tenés intención real de trabajar con nosotros), te proponemos el plan que más le conviene a tu marca y arrancamos con la primera jornada de grabación.</div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">¿Trabajan solo en Asunción?<span class="faq-icon">+</span></button>
+        <div class="faq-a">No — ofrecemos servicios en todo Paraguay. Coordinamos las jornadas de grabación según tu ubicación, y el resto del trabajo (estrategia, edición, publicación, reuniones) se maneja de forma remota sin problema.</div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">¿Necesito aparecer en cámara?<span class="faq-icon">+</span></button>
+        <div class="faq-a">No es obligatorio, aunque para profesionales y marcas personales suele ser lo que mejor funciona. Si preferís no aparecer, armamos una línea de contenido basada en tu producto, tu equipo o tu proceso. Y si aparecés, te dirigimos en cada grabación para que salga natural.</div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">¿Cuál es el plazo mínimo de los planes?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Todos los planes tienen un plazo mínimo de 3 meses. El crecimiento en redes es acumulativo: los primeros 90 días construyen la base de constancia y datos que hace que la estrategia funcione de verdad.</div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">¿Incluyen la pauta publicitaria (ads)?<span class="faq-icon">+</span></button>
+        <div class="faq-a">La pauta paga se cotiza aparte de los planes, según tu objetivo y presupuesto de inversión. Lo bueno: el contenido que producimos ya queda listo para usarse en campañas.</div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">¿Hacen podcast, streaming y coberturas?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Sí. Producimos podcasts de punta a punta (set, grabación multicámara, edición y clips), transmisiones en vivo profesionales y coberturas de eventos, lanzamientos y activaciones. Se pueden sumar a tu plan o contratar como proyecto puntual.</div>
+    </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+    <div class="contact-left fade-up">
+        <div>
+            <div class="contact-label">CONTACTO · SCALE®</div>
+            <h2 class="contact-title">Hablemos<span>.</span></h2>
+            <p class="contact-desc">
+                Contanos de tu marca y te decimos, sin compromiso, por dónde arrancar.
+                El análisis de tu perfil digital corre por nuestra cuenta.
+            </p>
+            <p class="contact-quote">"No es suerte, es estrategia."</p>
+        </div>
+        <div class="contact-meta">
+            <a data-wa data-msg="Hola Scale! Quiero más información." target="_blank" rel="noopener" id="wa-display">+595 993 391 354 →</a>
+            <a href="https://www.instagram.com/scale.paraguay" target="_blank" rel="noopener">@scale.paraguay</a>
+            <span>Asunción · Servicios en todo Paraguay</span>
+        </div>
+    </div>
+    <div class="contact-right fade-up">
+        <form id="contact-form">
+            <div class="form-row">
+                <div class="form-field">
+                    <label>Nombre</label>
+                    <input type="text" id="f-nombre" placeholder="Tu nombre" required>
+                </div>
+                <div class="form-field">
+                    <label>Marca / Negocio</label>
+                    <input type="text" id="f-marca" placeholder="Nombre de tu marca">
+                </div>
+            </div>
+            <div class="form-field form-full">
+                <label>¿Qué te interesa?</label>
+                <select id="f-interes">
+                    <option>Plan mensual de contenido</option>
+                    <option>Consultoría / Estrategia</option>
+                    <option>Podcast</option>
+                    <option>Streaming</option>
+                    <option>Cobertura de evento</option>
+                    <option>Otro</option>
+                </select>
+            </div>
+            <div class="form-field form-full" style="margin-bottom:0">
+                <label>Mensaje</label>
+                <textarea rows="5" id="f-mensaje" placeholder="Contanos sobre tu marca y lo que necesitás..."></textarea>
+            </div>
+            <div class="form-footer">
+                <div class="form-note">Al enviar se abre WhatsApp con tu mensaje listo — respondemos rápido.</div>
+                <button type="submit" class="btn-primary">Enviar por WhatsApp →</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-top">
+        <a href="#hero" class="footer-logo">scale<span>®</span></a>
+        <div class="footer-links">
+            <a href="#servicios">Servicios</a>
+            <a href="#para-quien">Para quién</a>
+            <a href="#planes">Planes</a>
+            <a href="#contacto">Contacto</a>
+            <a href="https://www.instagram.com/scale.paraguay" target="_blank" rel="noopener">Instagram</a>
+        </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+        <span class="footer-copy">© 2026 Scale Strategy Group EAS · RUC 80168807-8</span>
+        <span class="footer-copy" style="font-style:italic">"No es suerte, es estrategia."</span>
+        <span class="footer-location">Asunción, Paraguay · scaleparaguay.com</span>
+    </div>
+    <div class="footer-bg-text">scale</div>
+</footer>
+
+<!-- WHATSAPP FLOTANTE -->
+<a data-wa data-msg="Hola Scale! Quiero más información." target="_blank" rel="noopener" class="wa-float" aria-label="Contactar por WhatsApp">
+    <svg width="28" height="28" fill="#fff" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.624-1.467A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.331 0-4.512-.656-6.375-1.793l-.456-.271-2.742.87.904-2.666-.299-.474A9.713 9.713 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/></svg>
+</a>
+
+<script>
+// ==================================================================
+// CONFIGURACIÓN — editá SOLO esta línea con el número de WhatsApp
+// Formato: 595 + número sin el 0 inicial. Ej: '595981123456'
+// ==================================================================
+var WHATSAPP_NUMBER = '595993391354'; // WhatsApp oficial de Scale
+
+// Rellena todos los links de WhatsApp
+document.querySelectorAll('[data-wa]').forEach(function(el) {
+    var msg = encodeURIComponent(el.getAttribute('data-msg') || 'Hola Scale!');
+    el.setAttribute('href', 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + msg);
+});
+
+// Formulario → WhatsApp
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var nombre = document.getElementById('f-nombre').value.trim();
+    var marca = document.getElementById('f-marca').value.trim();
+    var interes = document.getElementById('f-interes').value;
+    var mensaje = document.getElementById('f-mensaje').value.trim();
+    var texto = 'Hola Scale! Soy ' + (nombre || '...')
+        + (marca ? ', de ' + marca : '')
+        + '. Me interesa: ' + interes + '.'
+        + (mensaje ? ' ' + mensaje : '');
+    window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(texto), '_blank');
+});
+
+// Cursor custom (solo desktop)
+if (window.matchMedia('(pointer: fine)').matches) {
+    var cursor = document.getElementById('cursor');
+    var ring = document.getElementById('cursorRing');
+    var mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
+    (function animCursor() {
+        cursor.style.left = (mx - 5) + 'px';
+        cursor.style.top = (my - 5) + 'px';
+        rx += (mx - rx) * .18;
+        ry += (my - ry) * .18;
+        ring.style.left = (rx - 18) + 'px';
+        ring.style.top = (ry - 18) + 'px';
+        requestAnimationFrame(animCursor);
+    })();
+    document.querySelectorAll('a,button').forEach(function(el) {
+        el.addEventListener('mouseenter', function() {
+            cursor.style.transform = 'scale(2.5)'; cursor.style.opacity = '.7';
+            ring.style.width = '54px'; ring.style.height = '54px';
+            ring.style.borderColor = 'rgba(168,51,160,.6)';
+        });
+        el.addEventListener('mouseleave', function() {
+            cursor.style.transform = 'scale(1)'; cursor.style.opacity = '1';
+            ring.style.width = '36px'; ring.style.height = '36px';
+            ring.style.borderColor = 'rgba(168,51,160,.4)';
+        });
+    });
+}
+
+// Nav scroll
+window.addEventListener('scroll', function() {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Fade-up observer
+var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .12 });
+document.querySelectorAll('.fade-up').forEach(function(el) { obs.observe(el); });
+
+// FAQ
+function toggleFaq(btn) {
+    var item = btn.parentElement;
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+    if (!wasOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
