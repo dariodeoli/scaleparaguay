@@ -218,9 +218,9 @@ h1 { font-style: italic; letter-spacing: -.5px; }
 
     <div class="card">
         <h2>Detalle diario — últimos 14 días</h2>
-        <p class="hint" style="margin-bottom:8px">Cargas, clicks a WhatsApp y formularios por día.</p>
+        <p class="hint" style="margin-bottom:8px">Cargas y clicks a WhatsApp por día.</p>
         <table>
-            <thead><tr><th>Día</th><th class="r">Cargas</th><th class="r">WhatsApp</th><th class="r">Formularios</th><th class="r">Conversión</th></tr></thead>
+            <thead><tr><th>Día</th><th class="r">Cargas</th><th class="r">WhatsApp</th><th class="r">Conversión</th></tr></thead>
             <tbody id="tbody"></tbody>
         </table>
     </div>
@@ -236,14 +236,12 @@ h1 { font-style: italic; letter-spacing: -.5px; }
 <script>
 var NS = 'scaleparaguay_com';
 var API = 'https://api.counterapi.dev/v1/' + NS + '/';
-var DAYS = 14; // días del gráfico y la tabla
+var DAYS = 14;
+var CACHE_KEY = 'panel-cache-v2';
+var CACHE_TTL = 5 * 60 * 1000; // 5 minutos
 
-function fmtDate(d) {
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-}
-function fmtMonth(d) {
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
-}
+function fmtDate(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function fmtMonth(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0'); }
 function labelDate(iso) { var p = iso.split('-'); return p[2] + '/' + p[1]; }
 function niceDate(iso) {
     var d = new Date(iso + 'T12:00:00');
@@ -251,10 +249,9 @@ function niceDate(iso) {
     return dias[d.getDay()] + ' ' + labelDate(iso);
 }
 
-// GET sin /up = solo lectura. Timeout de 9s → 0, para que el panel siempre cargue.
 function getCount(key) {
     var ctl = ('AbortController' in window) ? new AbortController() : null;
-    var t = ctl ? setTimeout(function(){ ctl.abort(); }, 6000) : null;
+    var t = ctl ? setTimeout(function(){ ctl.abort(); }, 7000) : null;
     return fetch(API + key + '/', ctl ? { signal: ctl.signal } : {}).then(function(r) {
         if (t) clearTimeout(t);
         if (!r.ok) return 0;
@@ -262,7 +259,7 @@ function getCount(key) {
     }).catch(function() { if (t) clearTimeout(t); return 0; });
 }
 
-// Ejecuta de a 8 requests en paralelo para no saturar el servicio
+// Pool de 24 requests en paralelo
 function getAll(keys) {
     var out = new Array(keys.length);
     var i = 0;
@@ -271,42 +268,63 @@ function getAll(keys) {
         var idx = i++;
         return getCount(keys[idx]).then(function(c) { out[idx] = c; return worker(); });
     }
-    var workers = [];
-    for (var k = 0; k < 12; k++) workers.push(worker());
-    return Promise.all(workers).then(function() { return out; });
+    var ws = [];
+    for (var k = 0; k < 24; k++) ws.push(worker());
+    return Promise.all(ws).then(function() { return out; });
 }
 
-function loadAll() {
+function getDates() {
+    var dates = [];
+    for (var i = DAYS - 1; i >= 0; i--) { var d = new Date(); d.setDate(d.getDate() - i); dates.push(fmtDate(d)); }
+    return dates;
+}
+
+function loadAll(skipCache) {
     var status = document.getElementById('status');
-    status.textContent = 'Cargando datos…';
     status.className = 'status loading';
 
-    var dates = [];
-    for (var i = DAYS - 1; i >= 0; i--) {
-        var d = new Date(); d.setDate(d.getDate() - i);
-        dates.push(fmtDate(d));
+    // Caché: pinta al instante si hay datos frescos (< 5 min)
+    if (!skipCache) {
+        try {
+            var c = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+            if (c && Date.now() - c.at < CACHE_TTL) {
+                renderTotals(c.tot);
+                renderDaily(c.dates, c.v, c.w, c.tot);
+                status.textContent = 'Actualizado hace ' + Math.round((Date.now()-c.at)/60000) + ' min · actualizando…';
+            }
+        } catch(e) {}
     }
+    status.textContent = status.textContent || 'Cargando datos…';
+
+    var dates = getDates();
     var now = new Date();
     var mesAct = fmtMonth(now);
     var prev = new Date(now.getFullYear(), now.getMonth() - 1, 15);
     var mesPrev = fmtMonth(prev);
 
-    var keys = [];
-    dates.forEach(function(dt) { keys.push('v-' + dt); });
-    dates.forEach(function(dt) { keys.push('w-' + dt); });
-    dates.forEach(function(dt) { keys.push('f-' + dt); });
-    keys.push('vm-' + mesAct, 'vm-' + mesPrev, 'wm-' + mesAct, 'fm-' + mesAct, 'mo-' + mesAct, 'vt', 'ps-' + mesAct, 'pg-' + mesAct, 'pd-' + mesAct);
+    // FASE 1: totales + hoy/ayer (rápido — pinta los números grandes ya)
+    var hoy = dates[DAYS-1], ayer = dates[DAYS-2];
+    var f1 = ['v-' + hoy, 'v-' + ayer, 'w-' + hoy, 'vm-' + mesAct, 'vm-' + mesPrev, 'wm-' + mesAct, 'fm-' + mesAct, 'mo-' + mesAct, 'vt', 'ps-' + mesAct, 'pg-' + mesAct, 'pd-' + mesAct];
+    var tot = null;
 
-    getAll(keys).then(function(res) {
-        var v = res.slice(0, DAYS);
-        var w = res.slice(DAYS, DAYS*2);
-        var f = res.slice(DAYS*2, DAYS*3);
-        var b = res.slice(DAYS*3);
-        render(dates, v, w, f, {
-            vmAct: b[0], vmPrev: b[1], wmAct: b[2], fmAct: b[3], moAct: b[4], vt: b[5], ps: b[6], pg: b[7], pd: b[8]
+    getAll(f1).then(function(t) {
+        tot = { vHoy: t[0], vAyer: t[1], wHoy: t[2], vmAct: t[3], vmPrev: t[4], wmAct: t[5], fmAct: t[6], moAct: t[7], vt: t[8], ps: t[6], pg: t[7], pd: t[8] };
+        renderTotals(tot);
+        status.textContent = 'Cargando gráfico…';
+
+        // FASE 2: diarios para gráfico y tabla
+        var f2 = [];
+        dates.forEach(function(dt) { f2.push('v-' + dt); });
+        dates.forEach(function(dt) { f2.push('w-' + dt); });
+        return getAll(f2).then(function(res) {
+            var v = res.slice(0, DAYS);
+            var w = res.slice(DAYS);
+            v[DAYS-1] = tot.vHoy > v[DAYS-1] ? tot.vHoy : v[DAYS-1];
+            renderDaily(dates, v, w, tot);
+            try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), dates: dates, v: v, w: w, tot: tot })); } catch(e) {}
+            status.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-PY', {hour:'2-digit',minute:'2-digit'});
+            status.className = 'status';
         });
-        status.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-PY', {hour:'2-digit',minute:'2-digit'});
-        status.className = 'status';
     }).catch(function() {
         status.textContent = 'Error al cargar — reintentá';
         status.className = 'status err';
@@ -319,35 +337,31 @@ function sum(arr, lastN) {
     return s;
 }
 
-function render(dates, v, w, f, tot) {
-    var hoy = v[v.length-1];
-    var ayer = v[v.length-2] || 0;
-    var sem = sum(v, 7), semPrev = sum(v.slice(0, -7), 7);
-    var waHoy = w[w.length-1];
-
-    document.getElementById('t-hoy').textContent = hoy.toLocaleString();
-    document.getElementById('t-sem').textContent = sem.toLocaleString();
+function renderTotals(tot) {
+    document.getElementById('t-hoy').textContent = tot.vHoy.toLocaleString();
     document.getElementById('t-mes').textContent = tot.vmAct.toLocaleString();
     document.getElementById('t-wa').textContent = tot.wmAct.toLocaleString();
-
-    document.getElementById('c-hoy').innerHTML = 'Ayer: <b>' + ayer + '</b>';
-    document.getElementById('c-sem').innerHTML = 'Semana anterior: <b>' + semPrev + '</b>';
+    document.getElementById('c-hoy').innerHTML = 'Ayer: <b>' + tot.vAyer + '</b>';
     document.getElementById('c-mes').innerHTML = 'Mes anterior: <b>' + tot.vmPrev + '</b>';
     document.getElementById('c-wa').innerHTML = tot.vmAct ? 'Conversión: <b>' + (tot.wmAct/tot.vmAct*100).toFixed(1) + '%</b>' : '';
-
-    var maxV = Math.max.apply(null, v);
-    var maxIdx = v.indexOf(maxV);
-    document.getElementById('k-prom').textContent = (sum(v)/DAYS).toFixed(1);
-    document.getElementById('k-max').textContent = maxV > 0 ? niceDate(dates[maxIdx]) + ' · ' + maxV : '—';
     document.getElementById('k-mob').textContent = tot.vmAct ? tot.moAct + ' (' + (tot.moAct/tot.vmAct*100).toFixed(0) + '%)' : '0';
-    document.getElementById('k-wahoy').textContent = waHoy;
+    document.getElementById('k-wahoy').textContent = tot.wHoy;
     document.getElementById('k-form').textContent = tot.fmAct;
     document.getElementById('k-total').textContent = tot.vt.toLocaleString();
     document.getElementById('k-silver').textContent = tot.ps;
     document.getElementById('k-gold').textContent = tot.pg;
     document.getElementById('k-diamond').textContent = tot.pd;
+}
 
-    // Gráfico
+function renderDaily(dates, v, w, tot) {
+    document.getElementById('t-sem').textContent = sum(v, 7).toLocaleString();
+    document.getElementById('c-sem').innerHTML = 'Semana anterior: <b>' + sum(v.slice(0, -7), 7) + '</b>';
+
+    var maxV = Math.max.apply(null, v);
+    var maxIdx = v.indexOf(maxV);
+    document.getElementById('k-prom').textContent = (sum(v)/DAYS).toFixed(1);
+    document.getElementById('k-max').textContent = maxV > 0 ? niceDate(dates[maxIdx]) + ' · ' + maxV : '—';
+
     var chart = document.getElementById('chart');
     var xl = document.getElementById('xlabels');
     chart.innerHTML = ''; xl.innerHTML = '';
@@ -359,9 +373,8 @@ function render(dates, v, w, f, tot) {
         var hW = Math.round(w[i] / peak * 175);
         day.innerHTML =
             '<div class="tip"><b style="color:#fff">' + niceDate(dt) + '</b><br>' +
-            '<span style="color:#d16ac4">●</span> ' + v[i] + ' cargas<br>' +
-            '<span style="color:#25D366">●</span> ' + w[i] + ' WhatsApp' +
-            (f[i] ? '<br><span style="color:#c77dff">●</span> ' + f[i] + ' formularios' : '') + '</div>' +
+            '<span style="color:var(--led)">●</span> ' + v[i] + ' cargas<br>' +
+            '<span style="color:#25D366">●</span> ' + w[i] + ' WhatsApp</div>' +
             '<div class="bar-w" style="height:' + hW + 'px"></div>' +
             '<div class="bar-v" style="height:' + Math.max(hV, v[i] > 0 ? 2 : 1) + 'px"></div>';
         chart.appendChild(day);
@@ -370,7 +383,6 @@ function render(dates, v, w, f, tot) {
         xl.appendChild(lab);
     });
 
-    // Tabla
     var tb = document.getElementById('tbody');
     tb.innerHTML = '';
     for (var i = dates.length - 1; i >= 0; i--) {
@@ -379,7 +391,6 @@ function render(dates, v, w, f, tot) {
         tr.innerHTML = '<td>' + niceDate(dates[i]) + '</td>' +
             '<td class="r"><span class="pill v">' + v[i] + '</span></td>' +
             '<td class="r"><span class="pill w">' + w[i] + '</span></td>' +
-            '<td class="r">' + f[i] + '</td>' +
             '<td class="r">' + conv + '</td>';
         tb.appendChild(tr);
     }
