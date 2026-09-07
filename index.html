@@ -1672,31 +1672,27 @@ function toggleFaq(btn) {
     if (!wasOpen) item.classList.add('open');
 }
 // ==================================================================
-// MÉTRICAS (sin base de datos propia) — alimenta el panel /admin
+// MÉTRICAS PROPIAS — alimenta el panel protegido de Scale
 // ==================================================================
 (function() {
-    var NS = 'scaleparaguay_com';
-    var API = 'https://abacus.jasoncameron.dev/hit/' + NS + '/';
+    var API = 'https://admin.scaleparaguay.com/api/events';
     if (location.protocol === 'file:' || location.hostname === 'localhost') return;
-    var d = new Date();
-    var DAY = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    var MON = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
-    function hit(key) {
-        try { fetch(API + key, { keepalive: true }).catch(function(){}); } catch(e) {}
+    function hit(name) {
+        try { fetch(API, { method:'POST', keepalive:true, headers:{'Content-Type':'application/json'}, body:JSON.stringify({name:name}) }).catch(function(){}); } catch(e) {}
     }
-    hit('v-' + DAY); hit('vm-' + MON); hit('vt');
-    if (/Mobi|Android/i.test(navigator.userAgent)) hit('mo-' + MON);
+    hit('page_view');
+    if (/Mobi|Android/i.test(navigator.userAgent)) hit('mobile_view');
     document.querySelectorAll('[data-wa]').forEach(function(el) {
         el.addEventListener('click', function() {
-            hit('w-' + DAY); hit('wm-' + MON);
+            hit('whatsapp_click');
             var m = el.getAttribute('data-msg') || '';
-            if (m.indexOf('Silver') > -1) hit('ps-' + MON);
-            if (m.indexOf('Gold') > -1) hit('pg-' + MON);
-            if (m.indexOf('Diamond') > -1) hit('pd-' + MON);
+            if (m.indexOf('Silver') > -1) hit('plan_silver');
+            if (m.indexOf('Gold') > -1) hit('plan_gold');
+            if (m.indexOf('Diamond') > -1) hit('plan_diamond');
         });
     });
     var cf = document.getElementById('contact-form');
-    if (cf) cf.addEventListener('submit', function() { hit('f-' + DAY); hit('fm-' + MON); });
+    if (cf) cf.addEventListener('submit', function() { hit('form_submit'); });
 })();
 </script>
 </body>
