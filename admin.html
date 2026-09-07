@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel Scale — Métricas del sitio</title>
+<title>Scale / Control — Métricas y señales</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 
@@ -153,8 +153,8 @@ h1 { font-style: italic; letter-spacing: -.5px; }
         <div class="head-l">
             <a href="/" style="font-family:'Outfit',sans-serif;font-weight:800;font-style:italic;font-size:28px;color:#fff;text-decoration:none;letter-spacing:-1.5px;">scale<span style="color:#d16ac4;font-style:normal;">®</span></a>
             <div>
-                <h1>Panel <em>de métricas</em></h1>
-                <div class="sub">scaleparaguay.com · datos en vivo</div>
+                <h1>Control <em>Scale</em></h1>
+                <div class="sub">métricas, señales y actividad del sitio</div>
             </div>
         </div>
         <div style="display:flex;gap:10px;align-items:center;">
@@ -163,6 +163,11 @@ h1 { font-style: italic; letter-spacing: -.5px; }
             <a href="/" class="btn">Ver sitio →</a>
         </div>
     </header>
+
+    <div class="card" style="margin-bottom:14px;border-color:rgba(209,106,196,.35);background:linear-gradient(135deg,rgba(209,106,196,.10),rgba(26,10,36,.92));">
+        <h2>Lectura rápida</h2>
+        <p class="hint" style="margin:6px 0 0">Este panel muestra actividad del sitio, intención comercial y conversiones. Si una fuente externa no responde, el panel lo informa y conserva el último estado disponible.</p>
+    </div>
 
     <div class="tiles">
         <div class="tile" style="--accent:#d16ac4">
@@ -235,7 +240,7 @@ h1 { font-style: italic; letter-spacing: -.5px; }
 
 <script>
 var NS = 'scaleparaguay_com';
-var API = 'https://api.counterapi.dev/v1/' + NS + '/';
+var API = 'https://api.counterapi.dev/v2/' + NS + '/';
 var DAYS = 14;
 var CACHE_KEY = 'panel-cache-v3';
 
@@ -254,7 +259,7 @@ function getCount(key) {
     return fetch(API + key + '/', ctl ? { signal: ctl.signal } : {}).then(function(r) {
         if (t) clearTimeout(t);
         if (!r.ok) return 0;
-        return r.json().then(function(j) { return j.count || 0; });
+        return r.json().then(function(j) { return (j && (j.count ?? (j.data && j.data.count))) || 0; });
     }).catch(function() { if (t) clearTimeout(t); return 0; });
 }
 
