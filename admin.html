@@ -125,6 +125,14 @@ td .pill { display: inline-block; min-width: 34px; text-align: center; padding: 
 
 .status { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
 .status.err { color: #ff5470; }
+.filters { display:flex; align-items:end; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:14px; }
+.filter-label { display:block; color:var(--muted); font-size:10px; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:7px; }
+.select { background:var(--surface-2); color:var(--text); border:1px solid var(--border-2); border-radius:999px; padding:10px 14px; font:inherit; min-width:190px; }
+.filter-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.filter-btn { background:transparent; color:var(--muted-2); border:1px solid var(--border-2); border-radius:999px; padding:9px 13px; cursor:pointer; font:inherit; font-size:11px; }
+.filter-btn.active, .filter-btn:hover { color:#12021a; background:var(--led); border-color:var(--led); }
+.chart-scroll { overflow-x:auto; padding-bottom:4px; }
+.chart-scroll .chart, .chart-scroll .xlabels { min-width:620px; }
 .foot { margin-top: 30px; font-size: 11px; color: var(--muted); line-height: 1.7; }
 .foot b { color: var(--muted-2); }
 
@@ -164,6 +172,17 @@ h1 { font-style: italic; letter-spacing: -.5px; }
         </div>
     </header>
 
+    <div class="card filters">
+        <div>
+            <span class="filter-label">Período visible</span>
+            <div class="filter-actions">
+                <button class="filter-btn active" id="mode-month" onclick="setMode('month')">Mes seleccionado</button>
+                <button class="filter-btn" id="mode-days" onclick="setMode('days')">Últimos 14 días</button>
+            </div>
+        </div>
+        <label><span class="filter-label">Mes</span><select id="month-select" class="select" onchange="setMonth(this.value)"></select></label>
+    </div>
+
     <div class="card" style="margin-bottom:14px;border-color:rgba(209,106,196,.35);background:linear-gradient(135deg,rgba(209,106,196,.10),rgba(26,10,36,.92));">
         <h2>Lectura rápida</h2>
         <p class="hint" style="margin:6px 0 0">Este panel muestra actividad del sitio, intención comercial y conversiones. Si una fuente externa no responde, el panel lo informa y conserva el último estado disponible.</p>
@@ -181,12 +200,12 @@ h1 { font-style: italic; letter-spacing: -.5px; }
             <div class="cmp" id="c-sem"></div>
         </div>
         <div class="tile" style="--accent:#d16ac4">
-            <div class="lab">Este mes</div>
+            <div class="lab">Mes seleccionado</div>
             <div class="num" id="t-mes">—</div>
             <div class="cmp" id="c-mes"></div>
         </div>
         <div class="tile" style="--accent:#25D366">
-            <div class="lab">Clicks a WhatsApp (mes)</div>
+            <div class="lab">WhatsApp (mes)</div>
             <div class="num" id="t-wa">—</div>
             <div class="cmp" id="c-wa"></div>
         </div>
@@ -194,20 +213,19 @@ h1 { font-style: italic; letter-spacing: -.5px; }
 
     <div class="row2">
         <div class="card">
-            <h2>Cargas por día — últimos 14 días</h2>
+            <h2 id="chart-title">Cargas por día — mes seleccionado</h2>
             <p class="hint">Pasá el mouse por una barra para ver el detalle del día.</p>
             <div class="legend">
                 <span><i style="background:#d16ac4"></i>Cargas de página</span>
                 <span><i style="background:#25D366"></i>Clicks a WhatsApp</span>
             </div>
-            <div class="chart" id="chart"></div>
-            <div class="xlabels" id="xlabels"></div>
+            <div class="chart-scroll"><div class="chart" id="chart"></div><div class="xlabels" id="xlabels"></div></div>
         </div>
         <div class="card">
             <h2>Resumen</h2>
             <p class="hint">Otros indicadores del período.</p>
             <div class="klist">
-                <div class="krow"><span class="k">Promedio diario (14d)</span><span class="v led" id="k-prom">—</span></div>
+                <div class="krow"><span class="k" id="avg-label">Promedio diario</span><span class="v led" id="k-prom">—</span></div>
                 <div class="krow"><span class="k">Mejor día</span><span class="v" id="k-max">—</span></div>
                 <div class="krow"><span class="k">Visitas desde móvil (mes)</span><span class="v" id="k-mob">—</span></div>
                 <div class="krow"><span class="k">Clicks a WhatsApp hoy</span><span class="v wa" id="k-wahoy">—</span></div>
@@ -222,7 +240,7 @@ h1 { font-style: italic; letter-spacing: -.5px; }
     </div>
 
     <div class="card">
-        <h2>Detalle diario — últimos 14 días</h2>
+        <h2 id="table-title">Detalle diario — mes seleccionado</h2>
         <p class="hint" style="margin-bottom:8px">Cargas y clicks a WhatsApp por día.</p>
         <table>
             <thead><tr><th>Día</th><th class="r">Cargas</th><th class="r">WhatsApp</th><th class="r">Conversión</th></tr></thead>
@@ -242,6 +260,8 @@ h1 { font-style: italic; letter-spacing: -.5px; }
 var NS = 'scaleparaguay_com';
 var API = 'https://abacus.jasoncameron.dev/get/' + NS;
 var DAYS = 14;
+var mode = 'month';
+var selectedMonth = fmtMonth(new Date());
 var CACHE_KEY = 'panel-cache-v3';
 
 function fmtDate(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
@@ -263,11 +283,36 @@ function getCount(key) {
     }).catch(function() { if (t) clearTimeout(t); return 0; });
 }
 
+function monthDates(month) {
+    var p = month.split('-'), y = Number(p[0]), m = Number(p[1]);
+    var last = new Date(y, m, 0).getDate(), dates = [];
+    for (var i = 1; i <= last; i++) dates.push(fmtDate(new Date(y, m - 1, i)));
+    if (month === fmtMonth(new Date())) dates = dates.filter(function(dt){ return dt <= fmtDate(new Date()); });
+    return dates;
+}
 function getDates() {
+    if (mode === 'month') return monthDates(selectedMonth);
     var dates = [];
     for (var i = DAYS - 1; i >= 0; i--) { var d = new Date(); d.setDate(d.getDate() - i); dates.push(fmtDate(d)); }
     return dates;
 }
+function setupMonths() {
+    var sel = document.getElementById('month-select');
+    for (var i = 0; i < 12; i++) {
+        var d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i);
+        var value = fmtMonth(d), opt = document.createElement('option');
+        opt.value = value; opt.textContent = d.toLocaleDateString('es-PY', {month:'long', year:'numeric'});
+        sel.appendChild(opt);
+    }
+    sel.value = selectedMonth;
+}
+function setMode(next) {
+    mode = next;
+    document.getElementById('mode-month').classList.toggle('active', mode === 'month');
+    document.getElementById('mode-days').classList.toggle('active', mode === 'days');
+    loadAll();
+}
+function setMonth(value) { selectedMonth = value; mode = 'month'; document.getElementById('mode-month').classList.add('active'); document.getElementById('mode-days').classList.remove('active'); loadAll(); }
 
 function loadAll() {
     var status = document.getElementById('status');
@@ -286,9 +331,9 @@ function loadAll() {
 
     var dates = getDates();
     var now = new Date();
-    var mesAct = fmtMonth(now);
-    var mesPrev = fmtMonth(new Date(now.getFullYear(), now.getMonth() - 1, 15));
-    var hoy = dates[DAYS-1], ayer = dates[DAYS-2];
+    var mesAct = mode === 'month' ? selectedMonth : fmtMonth(now);
+    var mesPrev = fmtMonth(new Date(Number(mesAct.slice(0,4)), Number(mesAct.slice(5,7)) - 2, 15));
+    var hoy = dates[dates.length-1], ayer = dates[dates.length-2] || hoy;
 
     // TODO EN PARALELO — sin colas. Los totales pintan apenas llegan.
     var tKeys = ['v-' + hoy, 'v-' + ayer, 'w-' + hoy, 'vm-' + mesAct, 'vm-' + mesPrev, 'wm-' + mesAct, 'fm-' + mesAct, 'mo-' + mesAct, 'vt', 'ps-' + mesAct, 'pg-' + mesAct, 'pd-' + mesAct];
@@ -305,7 +350,7 @@ function loadAll() {
 
     Promise.all([pTot, pV, pW]).then(function(res) {
         var v = res[1], w = res[2];
-        if (tot && tot.vHoy > v[DAYS-1]) v[DAYS-1] = tot.vHoy;
+        if (tot && tot.vHoy > v[v.length-1]) v[v.length-1] = tot.vHoy;
         renderDaily(dates, v, w, tot);
         try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), dates: dates, v: v, w: w, tot: tot })); } catch(e) {}
         status.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-PY', {hour:'2-digit',minute:'2-digit'});
@@ -339,12 +384,16 @@ function renderTotals(tot) {
 }
 
 function renderDaily(dates, v, w, tot) {
+    var periodLabel = mode === 'month' ? document.getElementById('month-select').selectedOptions[0].textContent : 'últimos 14 días';
+    document.getElementById('chart-title').textContent = 'Cargas por día — ' + periodLabel;
+    document.getElementById('table-title').textContent = 'Detalle diario — ' + periodLabel;
+    document.getElementById('avg-label').textContent = 'Promedio diario (' + dates.length + 'd)';
     document.getElementById('t-sem').textContent = sum(v, 7).toLocaleString();
     document.getElementById('c-sem').innerHTML = 'Semana anterior: <b>' + sum(v.slice(0, -7), 7) + '</b>';
 
     var maxV = Math.max.apply(null, v);
     var maxIdx = v.indexOf(maxV);
-    document.getElementById('k-prom').textContent = (sum(v)/DAYS).toFixed(1);
+    document.getElementById('k-prom').textContent = (sum(v)/Math.max(v.length,1)).toFixed(1);
     document.getElementById('k-max').textContent = maxV > 0 ? niceDate(dates[maxIdx]) + ' · ' + maxV : '—';
 
     var chart = document.getElementById('chart');
@@ -381,6 +430,7 @@ function renderDaily(dates, v, w, tot) {
     }
 }
 
+setupMonths();
 loadAll();
 </script>
 </body>
