@@ -240,7 +240,7 @@ h1 { font-style: italic; letter-spacing: -.5px; }
 
 <script>
 var NS = 'scaleparaguay_com';
-var API = 'https://abacus.jasoncameron.dev/get/' + NS + '/';
+var API = 'https://abacus.jasoncameron.dev/get/' + NS;
 var DAYS = 14;
 var CACHE_KEY = 'panel-cache-v3';
 
@@ -256,7 +256,7 @@ function niceDate(iso) {
 function getCount(key) {
     var ctl = ('AbortController' in window) ? new AbortController() : null;
     var t = ctl ? setTimeout(function(){ ctl.abort(); }, 8000) : null;
-    return fetch(API + key + '/', ctl ? { signal: ctl.signal } : {}).then(function(r) {
+    return fetch(API + '/' + key, ctl ? { signal: ctl.signal } : {}).then(function(r) {
         if (t) clearTimeout(t);
         if (!r.ok) return 0;
         return r.json().then(function(j) { return (j && (j.value ?? j.count ?? (j.data && j.data.count))) || 0; });
