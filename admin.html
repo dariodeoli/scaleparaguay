@@ -231,7 +231,7 @@ h1 { font-style: italic; letter-spacing: -.5px; }
     </div>
 
     <p class="foot">
-        <b>Cómo funciona:</b> cada carga de la página suma un contador del día vía <b>counterapi.dev</b> (servicio gratuito, sin base de datos propia ni mantenimiento).
+        <b>Cómo funciona:</b> cada carga de la página suma un contador del día vía <b>Abacus</b> (servicio gratuito, sin base de datos propia ni mantenimiento).
         Se registran: cargas de página, visitas desde móvil, clicks en botones de WhatsApp (con interés por plan Silver/Gold/Diamond) y envíos del formulario.
         Los datos empiezan a acumularse desde la publicación del sitio — los días sin tráfico registrado aparecen en cero.
         Este panel es de solo lectura: abrirlo no suma visitas.
@@ -240,7 +240,7 @@ h1 { font-style: italic; letter-spacing: -.5px; }
 
 <script>
 var NS = 'scaleparaguay_com';
-var API = 'https://api.counterapi.dev/v2/' + NS + '/';
+var API = 'https://abacus.jasoncameron.dev/get/' + NS + '/';
 var DAYS = 14;
 var CACHE_KEY = 'panel-cache-v3';
 
@@ -259,7 +259,7 @@ function getCount(key) {
     return fetch(API + key + '/', ctl ? { signal: ctl.signal } : {}).then(function(r) {
         if (t) clearTimeout(t);
         if (!r.ok) return 0;
-        return r.json().then(function(j) { return (j && (j.count ?? (j.data && j.data.count))) || 0; });
+        return r.json().then(function(j) { return (j && (j.value ?? j.count ?? (j.data && j.data.count))) || 0; });
     }).catch(function() { if (t) clearTimeout(t); return 0; });
 }
 

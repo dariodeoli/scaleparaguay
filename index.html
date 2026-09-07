@@ -1676,13 +1676,13 @@ function toggleFaq(btn) {
 // ==================================================================
 (function() {
     var NS = 'scaleparaguay_com';
-    var API = 'https://api.counterapi.dev/v2/' + NS + '/';
+    var API = 'https://abacus.jasoncameron.dev/hit/' + NS + '/';
     if (location.protocol === 'file:' || location.hostname === 'localhost') return;
     var d = new Date();
     var DAY = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
     var MON = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
     function hit(key) {
-        try { fetch(API + key + '/up', { keepalive: true }).catch(function(){}); } catch(e) {}
+        try { fetch(API + key, { keepalive: true }).catch(function(){}); } catch(e) {}
     }
     hit('v-' + DAY); hit('vm-' + MON); hit('vt');
     if (/Mobi|Android/i.test(navigator.userAgent)) hit('mo-' + MON);
